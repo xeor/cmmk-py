@@ -35,4 +35,11 @@ kb.key(
     'blue', delay=0.1
 )
 
+# Set a x-mas theme
+import string, random
+kb.key(
+    ' '.join([i for i in string.ascii_lowercase]),
+    lambda row, col: random.choice(['red', 'green'])
+)
+
 ```

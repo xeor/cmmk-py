@@ -95,20 +95,6 @@ cdef class CMMK:
 
         return param.value
 
-    def _get_rgb(self, color):
-        if isinstance(color, str):
-            colormap = {
-                'red': (255, 0, 0),
-                'green': (0, 255, 0),
-                'blue': (0, 0, 255)
-            }
-            color = colormap.get(color)
-            if not color:
-                valid_colors = ', '.join(colormap.keys())
-                raise InvalidColorError(f'No color named {color}. Valid colors are: {valid_colors}')
-
-        return color[0], color[1], color[2]
-
     def _get_keys(self, key):
         if isinstance(key, str):
             keys = key.split(' ')
@@ -117,6 +103,34 @@ cdef class CMMK:
             return [key]
         elif isinstance(key, list):
             return key
+
+    def _get_rgb(self, color):
+        if isinstance(color, str):
+            colormap = {
+                'white': (255, 255, 255),
+
+                'red': (255, 0, 0),
+                'dark-red': (100, 0, 0),
+                'yellow': (255, 255, 0),
+
+                'purple': (255, 0, 255),
+                'dark-purple': (255, 0, 255),
+
+                'green': (0, 255, 0),
+                'dark-green': (0, 100, 0),
+                'cyan': (0, 255, 255),
+
+                'blue': (0, 0, 255),
+                'dark-blue': (0, 0, 100),
+
+                'black': (0, 0, 0)
+            }
+            finalcolor = colormap.get(color)
+            if not finalcolor:
+                valid_colors = ', '.join(colormap.keys())
+                raise InvalidColorError(f'No color named "{color}". Valid colors are: {valid_colors}')
+
+        return finalcolor[0], finalcolor[1], finalcolor[2]
 
     def mode(self, mode):
         """
@@ -132,9 +146,13 @@ cdef class CMMK:
         )
 
     def key(self, key, color, delay=None):
-        r, g, b = self._get_rgb(color)
+        if not callable(color):
+            r, g, b = self._get_rgb(color)
 
         for k in self._get_keys(key):
             if delay:
                 time.sleep(delay)
+
+            if callable(color):
+                r, g, b = self._get_rgb(color(k[0], k[1]))
             set_single_key(r, g, b, k[0], k[1])

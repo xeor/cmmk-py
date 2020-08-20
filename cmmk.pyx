@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 cdef extern from "libcmmk/libcmmk.h":
@@ -76,7 +77,7 @@ cdef class CMMK:
 
         connect()
 
-    def _get_enum(self, enumname, param):
+    def _get_enum(self, enumname: str, param: str):
         enumname = 'cmmk_' + enumname
         paramname = 'CMMK_' + param.upper().replace('-', '_')
 
@@ -130,8 +131,10 @@ cdef class CMMK:
             self._get_enum('control_mode', mode)
         )
 
-    def key(self, key, color):
+    def key(self, key, color, delay=None):
         r, g, b = self._get_rgb(color)
 
         for k in self._get_keys(key):
+            if delay:
+                time.sleep(delay)
             set_single_key(r, g, b, k[0], k[1])

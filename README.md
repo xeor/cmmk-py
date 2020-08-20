@@ -28,4 +28,11 @@ kb.key('a', 'red')
 # Set 3 keys to a dark purple (r, g, b)
 kb.key('esc space o', (100, 0, 100))
 
+# Set a-z to blue with a delay
+import string
+kb.key(
+    ' '.join([i for i in string.ascii_lowercase]),
+    'blue', delay=0.1
+)
+
 ```

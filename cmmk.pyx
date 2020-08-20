@@ -77,7 +77,7 @@ cdef class CMMK:
 
         connect()
 
-    def _get_enum(self, enumname: str, param: str):
+    def _get_enum(self, enumname: str, param):
         enumname = 'cmmk_' + enumname
         paramname = 'CMMK_' + param.upper().replace('-', '_')
 

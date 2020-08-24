@@ -35,7 +35,7 @@ kb.key(
     'blue', delay=0.1
 )
 
-# Set a x-mas theme
+# x-mas theme
 import random
 kb.key(
     kb.all_keys,
